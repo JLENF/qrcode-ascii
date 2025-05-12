@@ -1,8 +1,12 @@
 # QR Code ASCII Generator
 
-A web application that generates QR codes and displays them as ASCII art. This project allows you to convert text or URLs into QR codes and view them in both ASCII art format and as standard QR code images.
+A web application that generates QR codes and displays them as ASCII art.
+
+![QR Code ASCII Generator Preview](./img/qrcode-ascii.png)
 
 ## Overview
+
+This project allows you to convert text or URLs into QR codes and view them in both ASCII art format and as standard QR code images.
 
 This project was inspired by [asciiqr.com](http://asciiqr.com/), but has been completely rewritten using Python and Flask. The original project used PHP and the deprecated Google Chart API for QR code generation. This version uses the modern [QR Server API](https://goqr.me/api/) and Python's image processing capabilities for more accurate ASCII art generation.
 
