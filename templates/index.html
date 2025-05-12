@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code ASCII Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .error {
+            color: #e74c3c;
+            margin: 20px 0;
+            padding: 10px;
+            border-left: 4px solid #e74c3c;
+            background-color: #fce6e5;
+            text-align: left;
+        }
+        
+        footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><a href="{{ url_for('index') }}">QR Code ASCII Generator</a></h1>
+        <p class="subtitle">Generate QR Codes with ASCII Art representation</p>
+        
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        <form method="post" action="{{ url_for('index') }}">
+            <div class="form-group">
+                <label for="text">Enter text or URL to encode:</label>
+                <input type="text" id="text" name="text" placeholder="Enter text or URL here" required>
+            </div>
+            <button type="submit">Generate QR Code</button>
+        </form>
+        
+        <footer>
+            <p>Created using the <a href="https://goqr.me/api/" target="_blank">QR Server API</a> | 
+            <a href="https://github.com/JLENF/qrcode-ascii" target="_blank">GitHub Repository</a></p>
+        </footer>
+    </div>
+</body>
+</html>

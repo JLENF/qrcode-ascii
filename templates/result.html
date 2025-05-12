@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code ASCII Generator - Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+        
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .ascii-output {
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            letter-spacing: 0;
+            margin: 0 auto;
+            display: inline-block;
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .ascii-output pre {
+            margin: 0;
+            padding: 0;
+            white-space: pre;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .copy-btn:hover {
+            opacity: 1;
+        }
+        
+        .copy-success {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .qr-image {
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the first tab as active by default
+            showTab('ascii-tab');
+            
+            // Add click event listeners to tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
+            });
+            
+            // Add copy button functionality
+            const copyBtn = document.getElementById('copyBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', copyAsciiToClipboard);
+            }
+        });
+        
+        function showTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content and activate tab
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+        
+        function copyAsciiToClipboard() {
+            const asciiContent = document.querySelector('.ascii-output pre').innerText;
+            navigator.clipboard.writeText(asciiContent).then(() => {
+                // Show success message
+                const successMsg = document.getElementById('copySuccess');
+                successMsg.style.display = 'block';
+                
+                // Hide after 2 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy to clipboard!');
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1><a href="{{ url_for('index') }}">QR Code ASCII Generator</a></h1>
+        <p class="subtitle">Generate QR Codes with ASCII Art representation</p>
+        
+        <div class="results">
+            <div class="tabs">
+                <div class="tab active" data-tab="ascii-tab">ASCII</div>
+                <div class="tab" data-tab="image-tab">QR Image</div>
+            </div>
+            
+            <div id="ascii-tab" class="tab-content active">
+                <div class="ascii-output">
+                    <button id="copyBtn" class="copy-btn">Copy to Clipboard</button>
+                    <div id="copySuccess" class="copy-success">Copied!</div>
+                    <pre>{{ ascii_qr|safe }}</pre>
+                </div>
+            </div>
+            
+            <div id="image-tab" class="tab-content">
+                <div class="qr-image">
+                    <img src="{{ image_url }}" alt="QR Code">
+                </div>
+            </div>
+            
+            <a href="{{ url_for('index') }}" class="back-link">Generate Another QR Code</a>
+        </div>
+        
+        <footer>
+            <p>Created using the <a href="https://goqr.me/api/" target="_blank">QR Server API</a> | 
+            <a href="https://github.com/JLENF/qrcode-ascii" target="_blank">GitHub Repository</a></p>
+        </footer>
+    </div>
+</body>
+</html>
