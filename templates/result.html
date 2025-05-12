@@ -67,17 +67,14 @@
         }
         
         .ascii-output {
-            font-family: 'Courier New', monospace;
-            line-height: 1;
-            letter-spacing: 0;
+            position: relative;
             margin: 0 auto;
             display: inline-block;
             text-align: center;
             background-color: white;
-            padding: 20px;
+            padding: 30px 20px 20px 20px; /* Increased top padding for copy button */
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         
         .ascii-output pre {
@@ -86,12 +83,19 @@
             white-space: pre;
             font-family: 'Courier New', monospace;
             font-size: 14px;
+            line-height: 1;
+            letter-spacing: 0;
+            font-weight: bold;
+            color: black;
+            text-align: left;
+            display: inline-block;
         }
         
         .copy-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: #3498db;
             color: white;
             border: none;
@@ -101,6 +105,7 @@
             font-size: 12px;
             opacity: 0.8;
             transition: opacity 0.3s;
+            z-index: 5;
         }
         
         .copy-btn:hover {
@@ -109,14 +114,17 @@
         
         .copy-success {
             position: absolute;
-            top: 40px;
-            right: 10px;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            margin-top: -5px;
             background-color: #2ecc71;
             color: white;
             padding: 5px 10px;
             border-radius: 4px;
             font-size: 12px;
             display: none;
+            z-index: 6;
         }
         
         .qr-image {
